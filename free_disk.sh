@@ -6,13 +6,23 @@ get_free() {
     perc="$(awk '{print $5}' <<< "$df_out")"
     perc="${perc%\%}"
     col="\x01"
+    [ "$perc" -le 79 ] && return 1
     [ "$perc" -ge 80 ] && col="\x03"
     [ "$perc" -ge 90 ] && col="\x04"
 
     echo "${col}${1} $free"
 }
 
-MSG="💽$(get_free /)$(get_free /home)"
+ROOT_STATUS="$(get_free "/")"
+HOME_STATUS="$(get_free "/home")"
 
-[ -z "$MSG" ] && exit 1
-echo -e "\x01${MSG}\x01"
+# Only show information if there is something interesting to show.
+ROOT_FREE=""
+HOME_FREE=""
+[ "$ROOT_STATUS" -eq 1 ] || ROOT_FREE="$ROOT_STATUS"
+[ "$HOME_STATUS" -eq 1 ] || HOME_FREE="$HOME_STATUS"
+
+MSG="${ROOT_FREE}${HOME_FREE}"
+
+[ -z "$MSG" ] && exit 0
+echo -e "\x01💽${MSG}\x01"

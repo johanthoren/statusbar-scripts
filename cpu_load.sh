@@ -6,7 +6,11 @@ RELATIVE="$(bc <<< "scale=2; ${LOAD}/${CORES}")"
 [[ "$RELATIVE" =~ ^\..* ]] && RELATIVE="0${RELATIVE}"
 
 case "$RELATIVE" in
-    [0]*)
+    [0][.][0-6]*)
+        # If there is no real load to show, then don't.
+        exit 0
+        ;;
+    [0][.][7-9]*)
         MSG="\x01🚚 ${RELATIVE}"
         ;;
     [1]*)

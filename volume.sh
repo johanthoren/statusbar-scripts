@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 MSG=""
-HP=""
-AIRPODS="$(bluetoothctl info E4:90:FD:29:5A:DC | grep Connected | cut -d ' ' -f 2)"
-[ "$AIRPODS" = "yes" ] && HP=" 🎧"
 
 OUTPUT="$(pactl list sinks | grep -m1 combined -A7)"
 
@@ -18,13 +15,13 @@ MUTE="$(cut -d' ' -f 2 <<< "$MUTE_LINE")"
 
 if [ "$LINES" -eq 1 ]; then
     VOL="${DUAL%%\%*}"
-    MSG="\x01🔈 ${VOL}%${HP}"
-    ((VOL > 30 && VOL < 79)) && MSG="\x01🔉 ${VOL}%${HP}"
-    [ "$VOL" -ge 80 ]&& MSG="\x01🔊 ${VOL}%${HP}"
+    MSG="\x01🔈 ${VOL}%"
+    ((VOL > 30 && VOL < 79)) && MSG="\x01🔉 ${VOL}%"
+    [ "$VOL" -ge 80 ]&& MSG="\x01🔊 ${VOL}%"
 fi
 
-[ ! "$LINES" -eq 1 ] && MSG="\x04N/A${HP}"
-[ "$MUTE" = "yes" ] && MSG="\x04🔇${HP}"
+[ ! "$LINES" -eq 1 ] && MSG="\x04N/A"
+[ "$MUTE" = "yes" ] && MSG="\x04🔇"
 
 [ -n "$MSG" ] || exit 1
 

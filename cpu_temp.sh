@@ -4,7 +4,8 @@ TEMP="$(sensors | awk '/Core 0/ {print $3}')"
 TEMP="${TEMP#+*}"
 TEMP="${TEMP%%.*}"
 
-[ "$TEMP" -le 74 ] && MSG="\x01🌡 ${TEMP}°C"
+# If the temperature is low, then don't show the status.
+[ "$TEMP" -le 74 ] && exit 0
 [ "$TEMP" -ge 75 ] && MSG="\x03🌡 ${TEMP}°C"
 [ "$TEMP" -ge 85 ] && MSG="\x04🌡 ${TEMP}°C"
 

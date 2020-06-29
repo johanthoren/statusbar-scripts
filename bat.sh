@@ -6,6 +6,8 @@ PERC="${PERC%\%}"
 STATUS="$(acpi -a | cut -d ' ' -f 3)"
 
 if [ "$STATUS" = "on-line" ]; then
+    # Only show the status if there is something interesting to show:
+    [ "$PERC" -eq 100 ] && exit 0
     MSG="\x01🔌 ${PERC}"
 else
     MSG="\x01🔋 ${PERC}"
