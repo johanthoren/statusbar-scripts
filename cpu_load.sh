@@ -11,11 +11,11 @@ case "$RELATIVE" in
         exit 0
         ;;
     [1]*)
-        MSG="\x03🚚 ${RELATIVE}"
+        MSG="🚚\x03${RELATIVE}"
         ;;
     [2-9]*)
-        MSG="\x04🚚 ${RELATIVE}"
+        MSG="🚚\x04${RELATIVE}"
 esac
 
 [ -z "$MSG" ] && exit 1
-echo -e "${MSG}\x01"
+echo -e "\x01${MSG}\x01"
