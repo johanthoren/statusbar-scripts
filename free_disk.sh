@@ -5,7 +5,7 @@ get_free() {
     free="$(awk '{print $4}' <<< "$df_out")"
     perc="$(awk '{print $5}' <<< "$df_out")"
     perc="${perc%\%}"
-    [ "$perc" -le 79 ] && return 1
+    [ "$perc" -le 89 ] && return 1
 
     echo "${1} $free"
 }
