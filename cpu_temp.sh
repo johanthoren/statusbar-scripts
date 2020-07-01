@@ -6,8 +6,8 @@ TEMP="${TEMP%%.*}"
 
 # If the temperature is low, then don't show the status.
 [ "$TEMP" -le 74 ] && exit 0
-[ "$TEMP" -ge 75 ] && MSG="🌡\x03${TEMP}°C"
-[ "$TEMP" -ge 85 ] && MSG="🌡\x04${TEMP}°C"
+[ "$TEMP" -ge 75 ] && MSG="🌡 ${TEMP}°C"
+[ "$TEMP" -ge 85 ] && MSG="🌡 ${TEMP}°C"
 
 [ -z "$MSG" ] && exit 1
-echo -e "\x01${MSG}\x01"
+echo -e " ${MSG} "

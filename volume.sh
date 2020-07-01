@@ -15,14 +15,14 @@ MUTE="$(cut -d' ' -f 2 <<< "$MUTE_LINE")"
 
 if [ "$LINES" -eq 1 ]; then
     VOL="${DUAL%%\%*}"
-    MSG="\x01🔈 ${VOL}%"
-    ((VOL > 30 && VOL < 79)) && MSG="\x01🔉 ${VOL}%"
-    [ "$VOL" -ge 80 ]&& MSG="\x01🔊 ${VOL}%"
+    MSG="🔈 ${VOL}%"
+    ((VOL > 30 && VOL < 79)) && MSG="🔉 ${VOL}%"
+    [ "$VOL" -ge 80 ]&& MSG="🔊 ${VOL}%"
 fi
 
-[ ! "$LINES" -eq 1 ] && MSG="\x04N/A"
-[ "$MUTE" = "yes" ] && MSG="\x04🔇"
+[ ! "$LINES" -eq 1 ] && MSG="N/A"
+[ "$MUTE" = "yes" ] && MSG="🔇"
 
 [ -n "$MSG" ] || exit 1
 
-echo -e "$MSG\x01"
+echo " $MSG "

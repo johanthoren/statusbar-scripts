@@ -5,12 +5,9 @@ get_free() {
     free="$(awk '{print $4}' <<< "$df_out")"
     perc="$(awk '{print $5}' <<< "$df_out")"
     perc="${perc%\%}"
-    col="\x01"
     [ "$perc" -le 79 ] && return 1
-    [ "$perc" -ge 80 ] && col="\x03"
-    [ "$perc" -ge 90 ] && col="\x04"
 
-    echo "${col}${1} $free"
+    echo "${1} $free"
 }
 
 ROOT_STATUS="$(get_free "/")"
@@ -25,4 +22,4 @@ HOME_FREE=""
 MSG="${ROOT_FREE}${HOME_FREE}"
 
 [ -z "$MSG" ] && exit 0
-echo -e "\x01💽${MSG}\x01"
+echo -e " 💽 ${MSG} "
