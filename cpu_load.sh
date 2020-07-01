@@ -10,10 +10,7 @@ case "$RELATIVE" in
         # If there is no real load to show, then don't.
         exit 0
         ;;
-    [1]*)
-        MSG="🚚 ${RELATIVE}"
-        ;;
-    [2-9]*)
+    [1-9]*)
         MSG="🚚 ${RELATIVE}"
 esac
 
