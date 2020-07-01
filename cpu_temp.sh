@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 MSG=""
 TEMP="$(sensors | awk '/Core 0/ {print $3}')"
+[ -z "$TEMP" ] && exit 1
+
 TEMP="${TEMP#+*}"
 TEMP="${TEMP%%.*}"
 
 # If the temperature is low, then don't show the status.
 [ "$TEMP" -le 74 ] && exit 0
-[ "$TEMP" -ge 75 ] && MSG="🌡 ${TEMP}°C"
-[ "$TEMP" -ge 85 ] && MSG="🌡 ${TEMP}°C"
+MSG="🌡 ${TEMP}°C"
 
-[ -z "$MSG" ] && exit 1
-echo -e " ${MSG} "
+echo " ${MSG} "
