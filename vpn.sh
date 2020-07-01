@@ -23,7 +23,7 @@ elif [ "$HOSTNAME" = "t470s" ]; then
             MSG="🔓 ${vpn_status}"
             ;;
         *)
-            MSG="🔓"
+            MSG="🔓 Unknown"
     esac
 fi
 
