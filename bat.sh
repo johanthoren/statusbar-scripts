@@ -1,9 +1,18 @@
 #!/bin/sh
 MSG=""
-PERC="$(acpi -b | cut -d ' ' -f 4 | uniq)"
-PERC="${PERC%*,}"
-PERC="${PERC%\%}"
-STATUS="$(acpi -a | cut -d ' ' -f 3)"
+ACPI="$(acpi -ab | grep -v 'Battery.*Unknown')"
+PERC=""
+PERCS="$(awk '/[0-9]{1,3}%/ { print $4 }' <<< "$ACPI")"
+NUMS=($(sed 's/\%//g' <<< "$PERCS"))
+COUNT=${#NUMS[@]}
+if [ "$COUNT" -eq 1 ]; then
+	PERC="$NUMS"
+elif [ "$COUNT" -ge 2 ]; then
+	SUM=$(IFS=+; echo "$((${NUMS[*]}))")
+	PERC=$(( $SUM / $COUNT ))
+fi
+
+STATUS="$(awk '/Adapter/ { print $3 }' <<< "$ACPI")"
 
 if [ "$STATUS" = "on-line" ]; then
     # Only show the status if there is something interesting to show:
@@ -11,8 +20,6 @@ if [ "$STATUS" = "on-line" ]; then
     MSG="🔌 ${PERC}"
 else
     MSG="🔋 ${PERC}"
-    [ "$PERC" -le 20 ] && MSG="🔋 ${PERC}"
-    [ "$PERC" -le 10 ] && MSG="🔋 ${PERC}"
 fi
 
 [ -z "$MSG" ] && exit 1
