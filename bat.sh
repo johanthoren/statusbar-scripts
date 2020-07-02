@@ -9,7 +9,7 @@ if [ "$COUNT" -eq 1 ]; then
 	PERC="$NUMS"
 elif [ "$COUNT" -ge 2 ]; then
 	SUM=$(IFS=+; echo "$((${NUMS[*]}))")
-	PERC=$(( $SUM / $COUNT ))
+	PERC=$(( SUM / COUNT ))
 fi
 
 STATUS="$(awk '/Adapter/ { print $3 }' <<< "$ACPI")"
