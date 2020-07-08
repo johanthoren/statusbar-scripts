@@ -3,7 +3,7 @@ MSG=""
 ACPI="$(acpi -ab | grep -v 'Battery.*Unknown')"
 PERC=""
 PERCS="$(awk '/[0-9]{1,3}%/ { print $4 }' <<< "$ACPI")"
-NUMS=($(sed 's/\%//g' <<< "$PERCS"))
+NUMS=($(tr -d [:punct:] <<< "$PERCS"))
 COUNT=${#NUMS[@]}
 if [ "$COUNT" -eq 1 ]; then
 	PERC="$NUMS"
