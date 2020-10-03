@@ -16,8 +16,12 @@ HOME_STATUS="$(get_free "/home")"
 # Only show information if there is something interesting to show.
 ROOT_FREE=""
 HOME_FREE=""
-[ "$ROOT_STATUS" -eq 1 ] || ROOT_FREE="$ROOT_STATUS"
-[ "$HOME_STATUS" -eq 1 ] || HOME_FREE="$HOME_STATUS"
+if [ ! "$ROOT_STATUS" = 1 ]; then
+    ROOT_FREE="$ROOT_STATUS"
+fi
+if [ ! "$HOME_STATUS" = 1 ]; then
+    HOME_FREE="$HOME_STATUS"
+fi
 
 MSG="${ROOT_FREE}${HOME_FREE}"
 
