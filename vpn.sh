@@ -10,11 +10,15 @@ if [ "$HOSTNAME" = "t490" ]; then
     [ -n "$vpn_ip" ] && MSG="🌐 ${vpn_ip}"
 elif [ "$HOSTNAME" = "t470s" ]; then
     vpn_status="$(mullvad status | awk '{print $3}')"
-    country="$(mullvad relay get | awk '{ print toupper ($NF) }')"
+    relay_info="$(mullvad relay get)"
+    country="$(awk '{ print toupper ($NF) }' <<< $relay_info)"
+    city_code="$(awk '{ print $(NF - 1) }' <<< $relay_info)"
+    city_code="$(sed 's/,//' <<< $city_code)"
+    city_name="$(mullvad relay list | grep \(${city_code}\) | head -n1 | awk -F '(' '{ print $1 }' | awk -F , '{ print $1 }' | sed 's/^\s*//' | sed 's/\s*$//')"
 
     case "$vpn_status" in
         Connected)
-            MSG=" ${country}"
+            MSG=" ${city_name}, ${country}"
             ;;
         Connecting)
             MSG="🔓 ${vpn_status}"
