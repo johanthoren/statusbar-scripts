@@ -3,8 +3,9 @@ MSG=""
 
 if command -v mullvad &> /dev/null; then
     relay_info="$(mullvad relay get)"
-    country="$(awk '{ print toupper ($NF) }' <<< $relay_info)"
-    city_code="$(awk '{ print $(NF - 1) }' <<< $relay_info)"
+    relay_info="${relay_info##*city\ }"
+    country="$(awk '{ print toupper ($2) }' <<< $relay_info)"
+    city_code="$(awk '{ print $1 }' <<< $relay_info)"
     city_code="$(sed 's/,//' <<< $city_code)"
     city_name="$(mullvad relay list | grep \(${city_code}\) | head -n1 | awk -F '(' '{ print $1 }' | awk -F , '{ print $1 }' | sed 's/^\s*//' | sed 's/\s*$//')"
     vpn_status="$(mullvad status | awk '{print $3}')"
