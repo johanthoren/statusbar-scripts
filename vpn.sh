@@ -12,7 +12,7 @@ if command -v mullvad &> /dev/null; then
 
     case "$vpn_status" in
         Connected)
-            MSG=" ${city_name}, ${country}"
+            MSG="🔒 ${city_name}, ${country}"
             ;;
         Connecting)
             MSG="🔓 ${vpn_status}"
