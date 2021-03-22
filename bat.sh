@@ -32,7 +32,7 @@ msg_openbsd() {
     PERC=$(apm -l)
     STATUS=$(apm -a)
 
-    if [ "$STATUS" -eq 0 ]; then
+    if [ "$STATUS" -eq 1 ]; then
         # Only show the status if there is something interesting to show:
         [ "$PERC" -eq 100 ] && exit 0
         [ -z "$PERC" ] && exit 1
