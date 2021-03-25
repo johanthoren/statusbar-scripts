@@ -24,7 +24,7 @@ country="${country_tmp#\"}"
 
 case "$mullvad_exit_ip" in
     true)
-        MSG="🔒 ${ip}, ${country}"
+        MSG="🔒 ${country}"
         ;;
     false)
         # Uncomment the line below and remove the whole case statement to
