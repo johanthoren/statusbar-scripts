@@ -5,12 +5,17 @@ set -euo pipefail
 source "$HOME/.profile"
 
 MSG=""
+SECONDARY=""
+
+if ip a show dev tunsnx > /dev/null 2>&1; then
+    SECONDARY=" + ${WORK_NAME}"
+fi
 
 IFS=$'\n'
 response=($(curl -s https://am.i.mullvad.net/json | \
             jq '.["ip", "country", "mullvad_exit_ip"]'))
 
-[ "${#response[@]}" -ne 3 ] && echo "🔓 Unknown" && exit 1
+[ "${#response[@]}" -ne 3 ] && echo "🔓 Unknown${SECONDARY}" && exit 1
 
 ip_str="${response[0]}"
 country_str="${response[1]}"
@@ -24,27 +29,13 @@ country="${country_tmp#\"}"
 
 case "$mullvad_exit_ip" in
     true)
-        MSG="🔒 ${country}"
+        MSG="🔒 ${country}${SECONDARY}"
         ;;
     false)
-        # Uncomment the line below and remove the whole case statement to
-        # skip this very personal check.
-        #MSG="🔓 ${ip}, ${country}"
-
-        # Remove from here:
-        case "${ip}" in
-            # My workpace VPN IP and a msg indicating connection.
-            "${WORK_IP}")
-                MSG="🔒 ${WORK_NAME}"
-                ;;
-            *)
-                MSG="🔓 ${ip}, ${country}"
-                ;;
-        esac
-        # Remove until here to disable the above mentioned check
+        MSG="🔓 ${ip}, ${country}${SECONDARY}"
         ;;
     *)
-        MSG="🔓 Unknown"
+        MSG="🔓 Unknown${SECONDARY}"
 esac
 
 [ -n "$MSG" ] || exit 1
