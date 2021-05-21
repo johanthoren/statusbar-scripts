@@ -82,4 +82,4 @@ elif [ "$OS" = "OpenBSD" ]; then
 fi
 
 [ -z "$MSG" ] && exit 0
-echo -e " ð½ ${MSG} "
+echo -e " 🖴 ${MSG} "
