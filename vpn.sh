@@ -6,16 +6,21 @@ source "$HOME/.profile"
 
 MSG=""
 SECONDARY=""
+TUNNEL=""
 
 if ip a show dev tunsnx > /dev/null 2>&1; then
     SECONDARY=" + ${WORK_NAME}"
+fi
+
+if nc -z localhost 1337; then
+    TUNNEL=" + SSH Tunnel"
 fi
 
 IFS=$'\n'
 response=($(curl -s https://am.i.mullvad.net/json | \
             jq '.["ip", "country", "mullvad_exit_ip"]'))
 
-[ "${#response[@]}" -ne 3 ] && echo "🔓 Unknown${SECONDARY}" && exit 1
+[ "${#response[@]}" -ne 3 ] && echo "🔓 Unknown${SECONDARY}${TUNNEL}" && exit 1
 
 ip_str="${response[0]}"
 country_str="${response[1]}"
@@ -29,13 +34,13 @@ country="${country_tmp#\"}"
 
 case "$mullvad_exit_ip" in
     true)
-        MSG="🔒 ${country}${SECONDARY}"
+        MSG="🔒 ${country}${SECONDARY}${TUNNEL}"
         ;;
     false)
-        MSG="🔓 ${ip}, ${country}${SECONDARY}"
+        MSG="🔓 ${ip}, ${country}${SECONDARY}${TUNNEL}"
         ;;
     *)
-        MSG="🔓 Unknown${SECONDARY}"
+        MSG="🔓 Unknown${SECONDARY}${TUNNEL}"
 esac
 
 [ -n "$MSG" ] || exit 1
