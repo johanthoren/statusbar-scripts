@@ -4,5 +4,21 @@ if ! command -v bibcal &> /dev/null; then
     exit 127
 fi
 
-bibcal -s && echo " Shabbat Shalom! " && exit 0
-exit 1
+day=$(bibcal -t)
+
+major_feast="$(awk '/Major/ {print $6}' <<< "$day")"
+minor_feast="$(awk '/Minor/ {print $6}' <<< "$day")"
+sabbath="$(awk '/Sabbath/ {print $4}' <<< "$day")"
+
+if [ ! "$major_feast" = "false" ]; then
+    echo " $major_feast "
+    exit 0
+elif [ ! "$minor_feast" = "false" ]; then
+    echo " $minor_feast "
+    exit 0
+elif [ ! "$sabbath" = "false" ]; then
+    echo " Sabbath "
+    exit 0
+else
+    exit 1
+fi
