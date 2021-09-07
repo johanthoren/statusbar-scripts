@@ -5,9 +5,11 @@ if ! command -v bibcal &> /dev/null; then
 fi
 
 day=$(bibcal -t)
+major="$(grep 'Major' <<< "$day")"
+major="$(grep 'Minor' <<< "$day")"
 
-major_feast="$(awk '/Major/ {print $4}' <<< "$day")"
-minor_feast="$(awk '/Minor/ {print $4}' <<< "$day")"
+major_feast="$(cut -d ' ' -f4- <<< "$major" | sed 's/^\s*//g')"
+minor_feast="$(cut -d ' ' -f4- <<< "$minor" | sed 's/^\s*//g')"
 
 if [ ! "$major_feast" = "false" ]; then
     echo " $major_feast "
